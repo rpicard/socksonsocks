@@ -1,0 +1,8 @@
+Things that need to be done, listed in no particular order.
+
+- Python 3 support (should be easy enough)
+- Proper error handling (Raise exceptions for each error case)
+- Documentation (do this for version 1.0)
+- Support more SOCKS versions
+- Support authentication methods (at least GSSAPI and username / password)
+- Support other types of commands (not just connect)
