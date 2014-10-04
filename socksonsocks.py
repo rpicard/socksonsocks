@@ -1,5 +1,4 @@
 import socket
-import ssl
 import struct
 
 def put_socks_on(s, proxy_host, proxy_port, host, port):
