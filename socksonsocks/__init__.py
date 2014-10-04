@@ -2,11 +2,6 @@ import socket
 import struct
 
 def put_socks_on(s, proxy_host, proxy_port, host, port):
-    """
-        s is a socket.socket()
-        proxy is an IP address
-        port is an integer
-    """
 
     # connect to the SOCKS proxy
     s.connect((proxy_host, proxy_port))
