@@ -122,8 +122,8 @@ def main():
 
     ss = ssl.wrap_socket(s)
 
-    ss.sendall('GET / HTTP/1.1\r\n\r\n')
-    print ss.recv(4096)
+    ss.sendall('GET /?q=ip HTTP/1.1\r\nHost: duckduckgo.com\r\n\r\n')
+    print ss.recv(8192)
 
     ss.close()
 
