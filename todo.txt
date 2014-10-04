@@ -6,3 +6,4 @@ Things that need to be done, listed in no particular order.
 - Support more SOCKS versions
 - Support authentication methods (at least GSSAPI and username / password)
 - Support other types of commands (not just connect)
+- Implement a test suite
