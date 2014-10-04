@@ -1,25 +1,16 @@
 import socket
 import ssl
+import struct
 
-def put_socks_on(s, host, port):
+def put_socks_on(s, proxy_host, proxy_port, host, port):
     """
-    s is a socket.socket()
-    proxy is an IP address
-    port is an integer
+        s is a socket.socket()
+        proxy is an IP address
+        port is an integer
     """
-
-
-def ip_to_bytes(ip):
-    byts = ''.join(
-
-def main():
-
-    host = '127.0.0.1'
-    port = 8080
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # connect to the SOCKS proxy
-    s.connect(('127.0.0.1', 5555))
+    s.connect((proxy_host, proxy_port))
 
     #   The client connects to the server, and sends a version
     #   identifier/method selection message:
@@ -84,10 +75,8 @@ def main():
     #             order
 
     req = b'\x05\x01\x00\x01'
-    # 50.18.192.251
-    req += b'\x32\x12\xC0\xFB'
-    # 443
-    req += b'\x01\xBB'
+    req += _ip_to_bytes(host)
+    req += _port_to_bytes(port)
 
     s.send(req)
 
@@ -131,12 +120,8 @@ def main():
         s.close()
         return 
 
-    ss = ssl.wrap_socket(s)
+    return s
 
-    ss.sendall('GET /?q=ip HTTP/1.1\r\nHost: duckduckgo.com\r\n\r\n')
-    print ss.recv(8192)
+def _ip_to_bytes(ip): return ''.join([ chr(int(s)) for s in ip.split('.')])
+def _port_to_bytes(port): return struct.pack('>H', port)
 
-    ss.close()
-
-if __name__ == '__main__':
-    main()
