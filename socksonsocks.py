@@ -1,6 +1,17 @@
 import socket
 import ssl
 
+def put_socks_on(s, host, port):
+    """
+    s is a socket.socket()
+    proxy is an IP address
+    port is an integer
+    """
+
+
+def ip_to_bytes(ip):
+    byts = ''.join(
+
 def main():
 
     host = '127.0.0.1'
