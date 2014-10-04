@@ -1,4 +1,5 @@
 import socket
+import ssl
 
 def main():
 
@@ -34,15 +35,15 @@ def main():
     #   If the selected METHOD is X'FF', none of the methods listed by the
     #   client are acceptable, and the client MUST close the connection.
 
-    if res[1] == b'0xFF':
+    if res[1] == b'\xFF':
         print 'NO ACCEPTABLE METHODS'
         s.close()
         return
-    elif res[1] != b'0x00':
+    elif res[1] != b'\x00':
         print "WRONG METHOD RETURNED BY SERVER"
         s.close()
         return
-    elif res[0] != b'0x05':
+    elif res[0] != b'\x05':
         print "WRONG VERSION RETURNED BY SERVER"
         s.close()
         return
@@ -72,10 +73,10 @@ def main():
     #             order
 
     req = b'\x05\x01\x00\x01'
-    # 127.0.0.1
-    req += b'\x7F\x00\x00\x01'
-    # 8080
-    req += b'\x1F\x90'
+    # 50.18.192.251
+    req += b'\x32\x12\xC0\xFB'
+    # 443
+    req += b'\x01\xBB'
 
     s.send(req)
 
@@ -112,9 +113,19 @@ def main():
     #          o  BND.ADDR       server bound address
     #          o  BND.PORT       server bound port in network octet order
 
-    
+    res = s.recv(10)
 
-    s.close()
+    if res[1] != b'\x00':
+        print "REQUEST FAILED"
+        s.close()
+        return 
+
+    ss = ssl.wrap_socket(s)
+
+    ss.sendall('GET / HTTP/1.1\r\n\r\n')
+    print ss.recv(4096)
+
+    ss.close()
 
 if __name__ == '__main__':
     main()
