@@ -1,7 +1,52 @@
+"""
+socksonsocks
+~~~~~~~~~~~~
+
+This module will (attempt to) help you connect a socket to a SOCKS proxy.
+
+I tried to make this as simple as possible. There is only one function, no
+classes or other abstractions.
+
+(c) 2014 by Robert Picard. MIT licensed.
+
+"""
+
 import socket
 import struct
 
 def put_socks_on(s, proxy_host, proxy_port, host, port):
+    """Connects a socket to a SOCKS proxy and connect that proxy to a host.
+
+    :param s: a socket, as in the result of socket.socket()
+    :param proxy_host: an IP address (string) that points to your SOCKS proxy
+    :param proxy_port: the port number (int) that your proxy is listening on
+    :param host: the IP address (string) of the server you're connecting to
+    :param port: the port number (int) on that server
+
+    Running *put_socks_on* is kind of like running socket.connect(). It
+    isn't some sort of drop-in replacement yet though.
+
+    Right now it only supports SOCKS 5 (and not really all of it). No
+    authentication yet. The code is documented with excerpts from RFC 1928
+    if you want to see how it works.
+
+    :todo: Make it a drop-in replacement for `socket.connect()`.
+
+    :todo: Support the full SOCKS 5 RFC (and maybe SOCKS 4).
+
+    Using a SOCKS proxy to connect via SSL. Note how we are still able to
+    wrap the socket with ssl:
+
+        >>> import socket
+        >>> from ssl import wrap_socket
+        >>> from socksonsocks import put_socks_on
+        >>> s = put_socks_on(socket.socket(), '127.0.0.1', 5555, '107.21.1.80', 443)
+        >>> ss = wrap_socket(s)
+        >>> ss.sendall('GET /?q=ip&format=json HTTP/1.1\\r\\n\Host: duckduckgo.com\\r\\n\\r\\n')
+        >>> print ss.recv(4096)
+
+
+    """
 
     # connect to the SOCKS proxy
     s.connect((proxy_host, proxy_port))
