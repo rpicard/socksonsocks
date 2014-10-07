@@ -69,7 +69,7 @@ def put_socks_on(s, proxy_host, proxy_port, host, port):
     #             order
 
     req = b'\x05\x01\x00\x01'
-    req += ''.join([ chr(int(s)) for s in ip.split('.')])
+    req += ''.join([ chr(int(st)) for st in host.split('.')])
     req += struct.pack('>H', port)
 
     s.send(req)
