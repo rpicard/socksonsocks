@@ -9,6 +9,9 @@ classes or other abstractions.
 
 (c) 2014 by Robert Picard. MIT licensed.
 
+Installation::
+    $ pip install socksonsocks
+
 """
 
 import socket
